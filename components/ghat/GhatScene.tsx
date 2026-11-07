@@ -8,7 +8,7 @@ export type GhatController = { ignite: (type: CrackerType, x?: number, y?: numbe
 interface Diya { x: number; y: number; s: number; spd: number; phase: number; }
 interface Person { kind: "walk" | "light"; tier: "top" | "steps"; x: number; lane: number; dir: 1 | -1; speed: number; phase: number; carry: boolean; }
 
-export default function BanarasScene({ fireworksOn, cracker, interactive, onIgnite, controllerRef }: {
+export default function GhatScene({ fireworksOn, cracker, interactive, onIgnite, controllerRef }: {
   fireworksOn: boolean;
   cracker: CrackerType;
   interactive: boolean;

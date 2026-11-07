@@ -1,7 +1,7 @@
 "use client";
 import { useRef, useState, useSyncExternalStore } from "react";
 import { Gamepad2, Volume2, VolumeX, Sparkles, ShoppingCart } from "lucide-react";
-import BanarasScene, { type GhatController } from "@/components/ghat/BanarasScene";
+import GhatScene, { type GhatController } from "@/components/ghat/GhatScene";
 import CrackerTray from "@/components/ghat/CrackerTray";
 import HomeScene from "@/components/home-studio/HomeScene";
 import SceneSwitcher from "@/components/controls/SceneSwitcher";
@@ -25,7 +25,7 @@ export default function Page(){
   const pickCracker=(t:CrackerType)=>{ setCracker(t); ghat.current?.ignite(t); audio.crackle(t); };
 
   return <main className="relative h-[100dvh] w-full overflow-hidden bg-[var(--midnight)]" aria-label="Ghar Wali Diwali">
-    {scene==="ghat" ? <div className="absolute inset-0"><BanarasScene fireworksOn={fireworks} cracker={cracker} interactive={entered&&!gameOpen} onIgnite={audio.crackle} controllerRef={ghat}/>{!entered && <IntroTitle onEnter={()=>setEntered(true)}/>}</div>
+    {scene==="ghat" ? <div className="absolute inset-0"><GhatScene fireworksOn={fireworks} cracker={cracker} interactive={entered&&!gameOpen} onIgnite={audio.crackle} controllerRef={ghat}/>{!entered && <IntroTitle onEnter={()=>setEntered(true)}/>}</div>
       : scene==="home" ? <div className="absolute inset-0"><HomeScene onCrackle={audio.crackle}/></div>
       : <DiwaliWall onGoHome={()=>setScene("home")} onGoGhat={()=>setScene("ghat")}/>}
     <div className="absolute inset-x-0 top-0 z-20 flex items-start justify-between gap-3 p-3 sm:p-4">

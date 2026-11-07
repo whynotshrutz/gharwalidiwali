@@ -1,6 +1,6 @@
 # Ghar Wali Diwali — Project Context
 
-Premium Next.js Diwali web experience with a cinematic Banaras Ghat scene, a "My Home" jhalar decoration studio with photo upload/export, a community Diwali Wall, and simple solo games.
+Premium Next.js Diwali web experience with a cinematic ghat scene, a "My Home" jhalar decoration studio with photo upload/export, a community Diwali Wall, and simple solo games.
 
 ## Stack & Rules
 - Next.js 16.4.5 App Router, TypeScript, Tailwind v4, GSAP, Canvas 2D, SVG, Lucide React, html-to-image.
@@ -22,7 +22,7 @@ npm run build
 
 ## What Has Been Done
 ### Scenes (`types/index.ts` — `SceneId`: `'ghat' | 'home' | 'wall'`)
-1. **Banaras Ghat** (`components/ghat/BanarasScene.tsx`)
+1. **Ghat** (`components/ghat/GhatScene.tsx`)
    - Procedural canvas water, diyas, stars, moon, backdrop.
    - `FireworkEngine` from `lib/fireworks.ts`; `GhatController` ref; `CrackerTray` (rocket/anaar/chakri/phuljhadi/laad).
    - Interactive tap-to-light crackers.
@@ -48,7 +48,7 @@ npm run build
    - Modal chrome handles body lock, Escape (back to picker / close), focus on close button.
 
 ### Page Orchestration (`app/page.tsx`)
-- Scene switcher (Banaras Ghat / My Home / Diwali Wall), countdown via `useSyncExternalStore`, audio toggle, volume slider, Diya Match modal, CrackerTray at bottom when ghat is active.
+- Scene switcher (Ghat / My Home / Diwali Wall), countdown via `useSyncExternalStore`, audio toggle, volume slider, Diya Match modal, CrackerTray at bottom when ghat is active.
 
 ## File Structure (key files)
 ```
@@ -58,7 +58,7 @@ app/
   layout.tsx
 components/
   ghat/
-    BanarasScene.tsx
+    GhatScene.tsx
     CrackerTray.tsx
     FireworksEngine → lib/fireworks.ts
   home-studio/
