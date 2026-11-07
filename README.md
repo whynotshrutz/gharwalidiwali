@@ -28,13 +28,12 @@ npm run build
 
 ## How it works
 
-- `app/page.tsx` orchestrates three scenes (Banaras Ghat, My Home, Diwali Wall) via `SceneSwitcher`, plus audio toggle/volume and a Games modal.
-- **Banaras Ghat** (`components/ghat/BanarasScene.tsx`): procedural canvas water, diyas, stars, moon, backdrop; `FireworkEngine` (`lib/fireworks.ts`) renders fireworks; `CrackerTray` selects a cracker (rocket, anaar, chakri, phuljhadi, bomb, laddi, shots10, sutli) to ignite on tap.
-- **My Home** (`components/home-studio/HomeScene.tsx`): upload a photo, decorate with jhalar (`components/jhalar-editor/`), undo/redo/preview/download; Celebrate mode renders `RooftopScene` with `CelebrationSky` fireworks on top.
-- **Diwali Wall** (`components/wall/DiwaliWall.tsx`): post photo/wish/feedback, stored device-locally in `localStorage` (`lib/wall.ts`); `TrendingPanel` shows ideas.
-- **Games** (`components/games/`): Diya Match, Tic Tac Toe, Diya Sequence, Tap the Diya, opened from the ghat scene.
-- Audio (`hooks/useAudio.ts`) uses WebAudio plus files in `public/audio/` for rocket, bomb, phuljhadi, and sutli.
-- Firework glow durations are tuned to match sound durations (e.g. phuljhadi glows ~3.5s).
+- The app has three main screens you can switch between: Banaras Ghat, My Home, and Diwali Wall, plus a Games popup. You can also turn sound on/off and change volume.
+- **Banaras Ghat** is the main scene. It shows a river ghat at night with water, diyas, stars and moon. Pick a firecracker from the tray at the bottom and tap the screen to light it; fireworks animate on a canvas. Crackers: rocket, anaar, chakri, phuljhadi (sparkler), bomb, and more.
+- **My Home** lets you upload a photo and decorate it with fairy lights (jhalar). You can undo/redo, preview and download the result. In Celebrate mode the photo is replaced by a rooftop scene with crackers firing above it.
+- **Diwali Wall** is a small community board where you can post a photo, wish or feedback. Posts are saved on your own device. There is also a panel with decoration, food, gifting and staying-back ideas.
+- **Games** (Diya Match, Tic Tac Toe, Diya Sequence, Tap the Diya) open from the ghat scene.
+- Sounds are generated in the browser, with real audio files used for rocket, bomb, phuljhadi and sutli. The sparkler's glow lasts as long as its sound (about 3.5 seconds).
 
 ## Deploy
 
