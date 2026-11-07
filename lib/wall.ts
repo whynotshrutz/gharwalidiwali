@@ -55,8 +55,13 @@ async function loadShared() {
     const res = await fetch("/api/wall", { cache: "no-store" });
     if (!res.ok) return;
     const data = await res.json();
-    if (Array.isArray(data.posts)) {
-      cache = data.posts.filter((p: unknown): p is WallPost => !!p && typeof (p as WallPost).id === "string" && typeof (p as WallPost).createdAt === "number");
+    if (data.shared && Array.isArray(data.posts)) {
+      const shared = data.posts.filter((p: unknown): p is WallPost => !!p && typeof (p as WallPost).id === "string" && typeof (p as WallPost).createdAt === "number");
+      const local = read();
+      const byId = new Map<string, WallPost>();
+      for (const p of shared) byId.set(p.id, p);
+      for (const p of local) if (!byId.has(p.id)) byId.set(p.id, p);
+      cache = [...byId.values()].sort((a, b) => b.createdAt - a.createdAt).slice(0, LIMIT);
       if (cache) write(cache);
       emit();
       sharedLoaded = true;
