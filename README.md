@@ -13,10 +13,11 @@ A premium Diwali web experience: a cinematic Banaras Ghat scene, a "My Home" jha
 
 ```bash
 npm install
+echo "GITHUB_TOKEN=your_token" > .env.local
 npm run dev
 ```
 
-Open http://localhost:3000.
+Open http://localhost:3000. The Diwali Wall uses a shared store backed by a GitHub repo; set `GITHUB_TOKEN` (repo scope) in `.env.local` (local) or in Vercel env vars (deploy). Without it, the wall falls back to per-device storage.
 
 ## Verify
 

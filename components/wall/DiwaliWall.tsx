@@ -49,7 +49,7 @@ export default function DiwaliWall({ onGoHome, onGoGhat }: { onGoHome?: () => vo
     if (kind === "feedback") {
       const subject = encodeURIComponent("Diwali Wall feedback" + (name.trim() ? " from " + name.trim().slice(0, 40) : ""));
       const body = encodeURIComponent((text.trim().slice(0, 280) || "(no message)") + (image ? "\\n\\n(Photo attached in the wall post.)" : ""));
-      window.open("mailto:shrutidutta8403@gmail.com?subject=" + subject + "&body=" + body, "_blank");
+      window.open("mailto:shrutidutta1436@gmail.com?subject=" + subject + "&body=" + body, "_blank");
     }
     setName(""); setText(""); setImage(null); setError("");
     flash("Pinned. The wall is a little brighter now.");

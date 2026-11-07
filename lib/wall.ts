@@ -16,12 +16,13 @@ export interface WallPost {
 
 const KEY = "gwd:wall:v1";
 const OWNER_KEY = "gwd:wall:owner";
-const LIMIT = 30;
+const LIMIT = 20;
 const EMPTY: WallPost[] = [];
 
 let cache: WallPost[] | null = null;
 let ownerCache: string | null = null;
 const listeners = new Set<() => void>();
+let sharedLoaded = false;
 
 function read(): WallPost[] {
   if (typeof window === "undefined") return EMPTY;
@@ -48,8 +49,24 @@ function write(next: WallPost[]) {
 
 function emit() { for (const l of listeners) l(); }
 
+async function loadShared() {
+  if (typeof window === "undefined") return;
+  try {
+    const res = await fetch("/api/wall", { cache: "no-store" });
+    if (!res.ok) return;
+    const data = await res.json();
+    if (Array.isArray(data.posts)) {
+      cache = data.posts.filter((p: unknown): p is WallPost => !!p && typeof (p as WallPost).id === "string" && typeof (p as WallPost).createdAt === "number");
+      if (cache) write(cache);
+      emit();
+      sharedLoaded = true;
+    }
+  } catch { /* keep local */ }
+}
+
 function subscribe(listener: () => void) {
   listeners.add(listener);
+  if (!sharedLoaded) { void loadShared(); }
   const onStorage = () => { cache = null; ownerCache = null; emit(); };
   window.addEventListener("storage", onStorage);
   return () => { listeners.delete(listener); window.removeEventListener("storage", onStorage); };
@@ -97,6 +114,9 @@ export function addPost(input: { name: string; text: string; kind: WallKind; ima
   cache = next;
   const result = write(next);
   emit();
+  void fetch("/api/wall", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "add", post }) })
+    .then(() => loadShared())
+    .catch(() => {});
   return result;
 }
 
@@ -105,6 +125,9 @@ export function removePost(id: string) {
   cache = next;
   const result = write(next);
   emit();
+  void fetch("/api/wall", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "remove", id }) })
+    .then(() => loadShared())
+    .catch(() => {});
   return result;
 }
 
@@ -113,6 +136,9 @@ export function setPostHidden(id: string, hidden: boolean) {
   cache = next;
   const result = write(next);
   emit();
+  void fetch("/api/wall", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "hide", id, hidden }) })
+    .then(() => loadShared())
+    .catch(() => {});
   return result;
 }
 
@@ -124,7 +150,7 @@ export function compressImage(file: File): Promise<string> {
     const img = new Image();
     img.onload = () => {
       try {
-        const max = 1000;
+        const max = 800;
         const scale = Math.min(1, max / Math.max(img.width, img.height));
         const c = document.createElement("canvas");
         c.width = Math.max(1, Math.round(img.width * scale));
@@ -134,7 +160,7 @@ export function compressImage(file: File): Promise<string> {
         g.fillStyle = "#0d1329";
         g.fillRect(0, 0, c.width, c.height);
         g.drawImage(img, 0, 0, c.width, c.height);
-        resolve(c.toDataURL("image/jpeg", 0.78));
+        resolve(c.toDataURL("image/jpeg", 0.6));
       } catch {
         reject(new Error("That photo couldn't be prepared."));
       } finally {
