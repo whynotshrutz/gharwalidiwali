@@ -1,36 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Ghar Wali Diwali
 
-## Getting Started
+A premium Diwali web experience: a cinematic Banaras Ghat scene, a "My Home" jhalar decoration studio, a community Diwali Wall, and simple solo games.
 
-First, run the development server:
+## Stack
+
+- Next.js 16 (App Router) + TypeScript
+- Tailwind CSS v4
+- GSAP, Canvas 2D, SVG, Lucide React
+- html-to-image (export), WebAudio (synthesized sound effects)
+
+## Run locally
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Verify
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npx tsc --noEmit
+npm run lint
+npm run build
+```
 
-## Learn More
+## How it works
 
-To learn more about Next.js, take a look at the following resources:
+- `app/page.tsx` orchestrates three scenes (Banaras Ghat, My Home, Diwali Wall) via `SceneSwitcher`, plus audio toggle/volume and a Games modal.
+- **Banaras Ghat** (`components/ghat/BanarasScene.tsx`): procedural canvas water, diyas, stars, moon, backdrop; `FireworkEngine` (`lib/fireworks.ts`) renders fireworks; `CrackerTray` selects a cracker (rocket, anaar, chakri, phuljhadi, bomb, laddi, shots10, sutli) to ignite on tap.
+- **My Home** (`components/home-studio/HomeScene.tsx`): upload a photo, decorate with jhalar (`components/jhalar-editor/`), undo/redo/preview/download; Celebrate mode renders `RooftopScene` with `CelebrationSky` fireworks on top.
+- **Diwali Wall** (`components/wall/DiwaliWall.tsx`): post photo/wish/feedback, stored device-locally in `localStorage` (`lib/wall.ts`); `TrendingPanel` shows ideas.
+- **Games** (`components/games/`): Diya Match, Tic Tac Toe, Diya Sequence, Tap the Diya, opened from the ghat scene.
+- Audio (`hooks/useAudio.ts`) uses WebAudio plus files in `public/audio/` for rocket, bomb, phuljhadi, and sutli.
+- Firework glow durations are tuned to match sound durations (e.g. phuljhadi glows ~3.5s).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deploy
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Import the repo in Vercel; it builds with `npm run build`.
