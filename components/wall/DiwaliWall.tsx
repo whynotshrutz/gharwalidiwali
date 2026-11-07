@@ -46,6 +46,11 @@ export default function DiwaliWall({ onGoHome, onGoGhat }: { onGoHome?: () => vo
     if (!text.trim() && !image) { setError("Give us a photo or a few words first."); return; }
     const result = addPost({ name: name.trim().slice(0, 40), text: text.trim().slice(0, 280), kind, image: image ?? undefined });
     if (!result.ok) { setError(result.error ?? "Couldn't save that post."); return; }
+    if (kind === "feedback") {
+      const subject = encodeURIComponent("Diwali Wall feedback" + (name.trim() ? " from " + name.trim().slice(0, 40) : ""));
+      const body = encodeURIComponent((text.trim().slice(0, 280) || "(no message)") + (image ? "\\n\\n(Photo attached in the wall post.)" : ""));
+      window.open("mailto:shrutidutta8403@gmail.com?subject=" + subject + "&body=" + body, "_blank");
+    }
     setName(""); setText(""); setImage(null); setError("");
     flash("Pinned. The wall is a little brighter now.");
   };
@@ -96,7 +101,7 @@ export default function DiwaliWall({ onGoHome, onGoGhat }: { onGoHome?: () => vo
             <button onClick={publish} disabled={preparing} className="flex items-center gap-2 rounded-full bg-[var(--gold)] px-5 py-2.5 text-sm font-semibold text-[#16121b] hover:bg-[var(--gold-soft)] disabled:opacity-50"><Send size={15}/> Pin it</button>
           </div>
           <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
-            <p className="text-[10px] text-[var(--cream-dim)]">Saved on this device · Photos get compressed · Be kind, it is Diwali.</p>
+            <p className="text-[10px] text-[var(--cream-dim)]">Saved on this device · Feedback is emailed to the host · Photos get compressed · Be kind, it is Diwali.</p>
             <div className="text-right">
               {error && <p role="alert" className="text-[11px] text-red-300">{error}</p>}
               {notice && <p role="status" className="text-[11px] text-[var(--gold-soft)]">{notice}</p>}
